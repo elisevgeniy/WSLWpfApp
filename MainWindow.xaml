@@ -1,0 +1,66 @@
+<Window x:Class="WSLWpfApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="WSL Manager" Height="500" Width="800">
+    <Grid Margin="10">
+        <TabControl>
+            <TabItem Header="Manage">
+                <StackPanel Margin="10">
+                    <Button Content="Launch WSL" Click="LaunchWsl_Click" Margin="0,5"/>
+                    <Button Content="List Distributions" Click="ListDistros_Click" Margin="0,5"/>
+                    <Button Content="Shutdown WSL" Click="ShutdownWsl_Click" Margin="0,5"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,5">
+                        <Label Content="Select Distro:" VerticalAlignment="Center"/>
+                        <ComboBox x:Name="cbDistros" Width="200" Margin="10,0"/>
+                        <Button Content="Set Default" Click="SetDefaultDistro_Click" Margin="10,0"/>
+                        <Button Content="Terminate" Click="TerminateDistro_Click" Margin="10,0"/>
+                    </StackPanel>
+                    <Button Content="WSL Status" Click="WslStatus_Click" Margin="0,5"/>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Import/Export">
+                <StackPanel Margin="10">
+                    <StackPanel Orientation="Horizontal" Margin="0,5">
+                        <Label Content="Distro Name:" VerticalAlignment="Center"/>
+                        <TextBox x:Name="txtImportName" Width="200" Margin="10,0"/>
+                        <Button Content="Select Tarball..." Click="SelectImportTarball_Click"/>
+                    </StackPanel>
+                    <Button Content="Import Distro" Click="ImportDistro_Click" Margin="0,5"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,5">
+                        <Label Content="Export Distro:" VerticalAlignment="Center"/>
+                        <ComboBox x:Name="cbExportDistro" Width="200" Margin="10,0"/>
+                        <Button Content="Select Export Path..." Click="SelectExportPath_Click"/>
+                    </StackPanel>
+                    <Button Content="Export Distro" Click="ExportDistro_Click" Margin="0,5"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,5">
+                        <Label Content="Default WSL Version:" VerticalAlignment="Center"/>
+                        <ComboBox x:Name="cbWslVersion" Width="100" Margin="10,0">
+                            <ComboBoxItem Content="1"/>
+                            <ComboBoxItem Content="2"/>
+                        </ComboBox>
+                        <Button Content="Set Version" Click="SetWslVersion_Click"/>
+                    </StackPanel>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Mount">
+                <StackPanel Margin="10">
+                    <StackPanel Orientation="Horizontal" Margin="0,5">
+                        <Label Content="Source Path:"/>
+                        <TextBox x:Name="txtSourcePath" Width="300" Margin="10,0"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,5">
+                        <Label Content="Mount Point:"/>
+                        <TextBox x:Name="txtMountPoint" Width="300" Margin="10,0"/>
+                    </StackPanel>
+                    <Button Content="Mount" Click="MountPath_Click" Margin="0,5"/>
+                    <Button Content="Unmount" Click="UnmountPath_Click" Margin="0,5"/>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Settings">
+                <StackPanel Margin="10">
+                    <CheckBox x:Name="chkDarkMode" Content="Dark Mode" Margin="0,5"/>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
