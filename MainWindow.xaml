@@ -6,12 +6,12 @@
         <TabControl>
             <TabItem Header="Manage">
                 <StackPanel Margin="10">
-                    <Button Content="Launch WSL" Click="LaunchWsl_Click" Margin="0,5"/>
+                    <Button x:Name="btnLaunchWsl" Content="Launch WSL" Click="LaunchWsl_Click" Margin="0,5" IsEnabled="False"/>
                     <Button Content="List Distributions" Click="ListDistros_Click" Margin="0,5"/>
                     <Button Content="Shutdown WSL" Click="ShutdownWsl_Click" Margin="0,5"/>
                     <StackPanel Orientation="Horizontal" Margin="0,5">
                         <Label Content="Select Distro:" VerticalAlignment="Center"/>
-                        <ComboBox x:Name="cbDistros" Width="200" Margin="10,0"/>
+                        <ComboBox x:Name="cbDistros" Width="200" Margin="10,0" SelectionChanged="CbDistros_SelectionChanged"/>
                         <Button Content="Set Default" Click="SetDefaultDistro_Click" Margin="10,0"/>
                         <Button Content="Terminate" Click="TerminateDistro_Click" Margin="10,0"/>
                     </StackPanel>
