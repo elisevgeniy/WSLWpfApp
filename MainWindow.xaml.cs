@@ -1,11 +1,15 @@
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using WSLWpfApp.Models;
+using WSLWpfApp.ViewModels;
 
 namespace WSLWpfApp
 {
@@ -14,25 +18,32 @@ namespace WSLWpfApp
         private string importTarballPath = "";
         private string exportPath = "";
         private bool wslLaunched = false;
-
+        private ObservableCollection<DistroModel> distros = new ObservableCollection<DistroModel>();
+        MainWindowViewModel ViewModel = new MainWindowViewModel();
         public MainWindow()
         {
             InitializeComponent();
             LoadDistros();
-            btnLaunchWsl.IsEnabled = false; // disable launch button initially
+
+            DataContext = ViewModel;
+            ViewModel.LoadDistros();
         }
 
         private void LoadDistros()
         {
+            distros.Clear();
             var output = RunCommandOutput("wsl -l");
             var lines = output.Split('\n', StringSplitOptions.RemoveEmptyEntries)
                               .Skip(1)
                               .Select(line => line.Trim().Split(' ')[0])
                               .Where(name => !string.IsNullOrWhiteSpace(name))
                               .ToList();
-
-            cbDistros.ItemsSource = lines;
-            cbExportDistro.ItemsSource = lines;
+            var distroModels = from distro in lines
+                               select new DistroModel
+                               {
+                                   Name = distro,
+                               };
+            distros.AddRange(distroModels);
         }
 
         private string RunCommandOutput(string command)
@@ -57,59 +68,16 @@ namespace WSLWpfApp
             }
         }
 
-        private void cbDistros_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            btnLaunchWsl.IsEnabled = cbDistros.SelectedItem != null;
-        }
-
-        private void LaunchWsl_Click(object sender, RoutedEventArgs e)
-        {
-            if (wslLaunched)
-            {
-                MessageBox.Show("WSL is already running or was launched.", "Notice");
-                return;
-            }
-
-            if (cbDistros.SelectedItem is string distro)
-            {
-                try
-                {
-                    Process.Start(new ProcessStartInfo
-                    {
-                        FileName = "wsl.exe",
-                        Arguments = $"-d {distro}",
-                        UseShellExecute = true,
-                        WindowStyle = ProcessWindowStyle.Normal
-                    });
-                    wslLaunched = true;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Failed to launch WSL: {ex.Message}");
-                }
-            }
-        }
-
         private void ListDistros_Click(object sender, RoutedEventArgs e) =>
             MessageBox.Show(RunCommandOutput("wsl -l"), "WSL Distributions");
 
         private void ShutdownWsl_Click(object sender, RoutedEventArgs e) =>
             MessageBox.Show(RunCommandOutput("wsl --shutdown"), "WSL Shutdown");
 
-        private void TerminateDistro_Click(object sender, RoutedEventArgs e)
+        private void WslStatus_Click(object sender, RoutedEventArgs e)
         {
-            if (cbDistros.SelectedItem is string distro)
-                MessageBox.Show(RunCommandOutput($"wsl --terminate {distro}"), "Terminated");
+            lblStatus.Text = RunCommandOutput("wsl --status");
         }
-
-        private void SetDefaultDistro_Click(object sender, RoutedEventArgs e)
-        {
-            if (cbDistros.SelectedItem is string distro)
-                MessageBox.Show(RunCommandOutput($"wsl --set-default {distro}"), "Default Distro Set");
-        }
-
-        private void WslStatus_Click(object sender, RoutedEventArgs e) =>
-            MessageBox.Show(RunCommandOutput("wsl --status"), "WSL Status");
 
         private void SelectImportTarball_Click(object sender, RoutedEventArgs e)
         {
@@ -164,9 +132,9 @@ namespace WSLWpfApp
                 MessageBox.Show(RunCommandOutput($"wsl --unmount \"{mount}\""), "Unmounted");
         }
 
-        private void CbDistros_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void LaunchDistro_Click(object sender, RoutedEventArgs e)
         {
-            btnLaunchWsl.IsEnabled = cbDistros.SelectedItem != null;
+
         }
     }
 }
