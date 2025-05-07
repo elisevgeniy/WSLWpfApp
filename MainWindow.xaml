@@ -14,15 +14,15 @@
         </StackPanel>
         <Grid Margin="10">
             <TabControl>
+
                 <TabItem Header="Manage">
                     <StackPanel Margin="10">
-                
                         <StackPanel>
                             <Label>Distro's</Label>
                             <ItemsControl Name="distroList" ItemsSource="{Binding Distros}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Grid  Margin="0,0,0,5">
+                                        <Grid Margin="0,0,0,5">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition />
                                                 <ColumnDefinition />
@@ -35,27 +35,26 @@
                                             <Label Grid.Column="1" Content="{Binding State}"></Label>
                                             <Label Grid.Column="2" Content="{Binding Version}"></Label>
                                             <Button Grid.Column="3" Margin="5,0"
-                                                    Command="{Binding Path=DataContext.LaunchWslCommand, ElementName=mainWindow}"
-                                                    CommandParameter="{Binding Path=Name}">
-                                                <StackPanel Orientation="Horizontal" >
+                                    Command="{Binding Path=DataContext.LaunchWslCommand, ElementName=mainWindow}"
+                                    CommandParameter="{Binding Path=Name}">
+                                                <StackPanel Orientation="Horizontal">
                                                     <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE768;" FontSize="16" Margin="4" VerticalAlignment="Center"/>
                                                     <TextBlock Margin="4" Grid.Column="1" VerticalAlignment="Center" Text="Launch"/>
                                                 </StackPanel>
-
                                             </Button>
-                                            <Button Grid.Column="4"  Margin="10,0"
-                                                    Command="{Binding Path=DataContext.SetDefaultDistroCommand, ElementName=mainWindow}"
-                                                    CommandParameter="{Binding Path=Name}">
-                                                <StackPanel Orientation="Horizontal" >
+                                            <Button Grid.Column="4" Margin="10,0"
+                                    Command="{Binding Path=DataContext.SetDefaultDistroCommand, ElementName=mainWindow}"
+                                    CommandParameter="{Binding Path=Name}">
+                                                <StackPanel Orientation="Horizontal">
                                                     <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE80F;" FontSize="16" Margin="4" VerticalAlignment="Center"/>
                                                     <TextBlock Margin="4" Text="Set Default" Grid.Column="1" VerticalAlignment="Center">
                                                     </TextBlock>
                                                 </StackPanel>
                                             </Button>
-                                            <Button Grid.Column="5"  Margin="10,0"
-                                                    Command="{Binding Path=DataContext.TerminateDistroCommand, ElementName=mainWindow}"
-                                                    CommandParameter="{Binding Path=Name}">
-                                                <StackPanel Orientation="Horizontal" >
+                                            <Button Grid.Column="5" Margin="10,0"
+                                    Command="{Binding Path=DataContext.TerminateDistroCommand, ElementName=mainWindow}"
+                                    CommandParameter="{Binding Path=Name}">
+                                                <StackPanel Orientation="Horizontal">
                                                     <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE71A;" FontSize="16" Margin="4" VerticalAlignment="Center"/>
                                                     <TextBlock Margin="4" Text="Terminate" Grid.Column="1" VerticalAlignment="Center">
                                                     </TextBlock>
@@ -66,9 +65,12 @@
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
                         </StackPanel>
+                        <!-- Add the button here -->
+                        <Button Content="Install wslu" Click="InstallWslu_Click" Width="120" Height="30" Margin="10"/>
                         <Button Content="WSL Status" Click="WslStatus_Click" Margin="0,5"/>
                     </StackPanel>
                 </TabItem>
+
                 <TabItem Header="Import/Export">
                     <StackPanel Margin="10">
                         <StackPanel Orientation="Horizontal" Margin="0,5">

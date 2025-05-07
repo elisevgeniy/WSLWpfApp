@@ -132,6 +132,18 @@ namespace WSLWpfApp
                 MessageBox.Show(RunCommandOutput($"wsl --unmount \"{mount}\""), "Unmounted");
         }
 
+        private void InstallWslu_Click(object sender, RoutedEventArgs e)
+        {
+            if(cbExportDistro.SelectedItem is string distro)
+            {
+                string command = $"wsl -d {distro} --exec bash -c \"sudo apt-get update && sudo apt-get install -y wslu\"";
+                string result = RunCommandOutput(command);
+                MessageBox.Show(result, "wslu Installation");
+            }
+            
+        }
+
+
         private void LaunchDistro_Click(object sender, RoutedEventArgs e)
         {
 
