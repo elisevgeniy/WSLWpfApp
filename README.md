@@ -1,4 +1,4 @@
-﻿# 🐧 WSL Manager - A GUI for Windows Subsystem for Linux
+﻿# WSL Manager - A GUI for Windows Subsystem for Linux
 
 A modern WPF desktop application for managing WSL (Windows Subsystem for Linux) distributions and settings, built with C# and .NET.
 
@@ -6,7 +6,7 @@ A modern WPF desktop application for managing WSL (Windows Subsystem for Linux) 
 
 ---
 
-## ✨ Features
+## Features
 
 - Launch default or selected WSL distributions
 - List all installed distributions
@@ -20,15 +20,15 @@ A modern WPF desktop application for managing WSL (Windows Subsystem for Linux) 
 
 ---
 
-## 📸 Screenshots
+## Screenshots
 
-### 🔧 Main Controls
+### Main Controls
 ![Main Controls](screenshots/manage-tab.png)
 
-### 📦 Import/Export
+### Import/Export
 ![Import Export](screenshots/import-export-tab.png)
 
-### 📁 Mount Management
+### Mount Management
 ![Mount Tab](screenshots/mount-tab.png)
 
 ---
@@ -40,7 +40,7 @@ A modern WPF desktop application for managing WSL (Windows Subsystem for Linux) 
 
 ---
 
-## 🛠️ Requirements
+## Requirements
 
 - Windows 10/11
 - WSL enabled
@@ -49,7 +49,7 @@ A modern WPF desktop application for managing WSL (Windows Subsystem for Linux) 
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Clone and Run
 
