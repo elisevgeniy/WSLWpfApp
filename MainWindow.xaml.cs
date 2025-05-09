@@ -1,8 +1,7 @@
 using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -15,6 +14,7 @@ namespace WSLWpfApp
 {
     public partial class MainWindow : Window
     {
+        private string activeDistro = null;
         private string importTarballPath = "";
         private string exportPath = "";
         private bool wslLaunched = false;
@@ -68,11 +68,66 @@ namespace WSLWpfApp
             }
         }
 
+        private async Task<string> RunCommandOutputAsync(string command)
+        {
+            try
+            {
+                var psi = new ProcessStartInfo("cmd.exe", $"/c {command}")
+                {
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true, // Capture errors as well
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                };
+
+                var process = new Process { StartInfo = psi, EnableRaisingEvents = true };
+
+                var outputBuilder = new StringWriter();
+                var errorBuilder = new StringWriter();
+
+                process.OutputDataReceived += (sender, args) =>
+                {
+                    if (!string.IsNullOrEmpty(args.Data))
+                        outputBuilder.WriteLine(args.Data);
+                };
+
+                process.ErrorDataReceived += (sender, args) =>
+                {
+                    if (!string.IsNullOrEmpty(args.Data))
+                        errorBuilder.WriteLine(args.Data);
+                };
+
+                process.Start();
+                process.BeginOutputReadLine();
+                process.BeginErrorReadLine();
+
+                await Task.Run(() => process.WaitForExit()); // Run WaitForExit on a background thread
+
+                if (process.ExitCode != 0)
+                {
+                    return $"Error: {errorBuilder.ToString().Trim()}";
+                }
+
+                return outputBuilder.ToString().Trim();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return "";
+            }
+        }
+
         private void ListDistros_Click(object sender, RoutedEventArgs e) =>
             MessageBox.Show(RunCommandOutput("wsl -l"), "WSL Distributions");
 
-        private void ShutdownWsl_Click(object sender, RoutedEventArgs e) =>
-            MessageBox.Show(RunCommandOutput("wsl --shutdown"), "WSL Shutdown");
+        private async void ShutdownWsl_Click(object sender, RoutedEventArgs e)
+        {
+            string output = await RunCommandOutputAsync("wsl --shutdown");
+            activeDistro = null; // Clear the active session
+            MessageBox.Show(output, "WSL Shutdown");
+        }
+
+
 
         private void WslStatus_Click(object sender, RoutedEventArgs e)
         {
@@ -134,19 +189,45 @@ namespace WSLWpfApp
 
         private void InstallWslu_Click(object sender, RoutedEventArgs e)
         {
-            if(cbExportDistro.SelectedItem is string distro)
+            if (cbExportDistro.SelectedItem is string distro)
             {
                 string command = $"wsl -d {distro} --exec bash -c \"sudo apt-get update && sudo apt-get install -y wslu\"";
                 string result = RunCommandOutput(command);
                 MessageBox.Show(result, "wslu Installation");
             }
-            
+
         }
 
-
-        private void LaunchDistro_Click(object sender, RoutedEventArgs e)
+        private async void LaunchDistro_Click(object sender, RoutedEventArgs e)
         {
+            if (cbExportDistro.SelectedItem is string distro)
+            {
+                // Check if a WSL session is already active
+                if (!string.IsNullOrEmpty(activeDistro))
+                {
+                    var result = MessageBox.Show(
+                        $"A WSL session for '{activeDistro}' is already active. Do you want to terminate it and launch '{distro}'?",
+                        "Active Session Detected",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Warning
+                    );
 
+                    if (result == MessageBoxResult.No)
+                    {
+                        return; // Do not launch the new session
+                    }
+
+                    // Terminate the active session
+                    await RunCommandOutputAsync($"wsl --terminate {activeDistro}");
+                }
+
+                // Launch the new distribution
+                string output = await RunCommandOutputAsync($"wsl -d {distro}");
+                activeDistro = distro; // Update the active session
+                MessageBox.Show(output, "WSL Launch");
+            }
         }
+
+
     }
 }

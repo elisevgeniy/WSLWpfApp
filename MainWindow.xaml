@@ -66,8 +66,8 @@
                             </ItemsControl>
                         </StackPanel>
                         <!-- Add the button here -->
-                        <Button Content="Install wslu" Click="InstallWslu_Click" Width="120" Height="30" Margin="10"/>
-                        <Button Content="WSL Status" Click="WslStatus_Click" Margin="0,5"/>
+                        <Button Content="Install wslu" Click="InstallWslu_Click" Margin="10,10,10,10" HorizontalAlignment="Left"/>
+                        <Button Content="WSL Status" Click="WslStatus_Click" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0"/>
                     </StackPanel>
                 </TabItem>
 
@@ -78,13 +78,13 @@
                             <TextBox x:Name="txtImportName" Width="200" Margin="10,0"/>
                             <Button Content="Select Tarball..." Click="SelectImportTarball_Click"/>
                         </StackPanel>
-                        <Button Content="Import Distro" Click="ImportDistro_Click" Margin="0,5"/>
+                        <Button Content="Import Distro" Click="ImportDistro_Click" Margin="10,5,0,5"/>
                         <StackPanel Orientation="Horizontal" Margin="0,5">
                             <Label Content="Export Distro:" VerticalAlignment="Center"/>
                             <ComboBox x:Name="cbExportDistro" Width="200" Margin="10,0"/>
                             <Button Content="Select Export Path..." Click="SelectExportPath_Click"/>
                         </StackPanel>
-                        <Button Content="Export Distro" Click="ExportDistro_Click" Margin="0,5"/>
+                        <Button Content="Export Distro" Click="ExportDistro_Click" Margin="10,5,0,5"/>
                         <StackPanel Orientation="Horizontal" Margin="0,5">
                             <Label Content="Default WSL Version:" VerticalAlignment="Center"/>
                             <ComboBox x:Name="cbWslVersion" Width="100" Margin="10,0">
@@ -105,8 +105,8 @@
                             <Label Content="Mount Point:"/>
                             <TextBox x:Name="txtMountPoint" Width="300" Margin="10,0"/>
                         </StackPanel>
-                        <Button Content="Mount" Click="MountPath_Click" Margin="0,5"/>
-                        <Button Content="Unmount" Click="UnmountPath_Click" Margin="0,5"/>
+                        <Button Content="Mount" Click="MountPath_Click" Margin="10,5,0,5"/>
+                        <Button Content="Unmount" Click="UnmountPath_Click" Margin="10,5,0,5"/>
                     </StackPanel>
                 </TabItem>
                 <TabItem Header="Settings">
