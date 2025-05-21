@@ -63,8 +63,8 @@ namespace WSLWpfApp.ViewModels
                     UseShellExecute = true,
                     WindowStyle = ProcessWindowStyle.Normal
                 };
-                var process = Process.Start(psi);
-                process.WaitForExit();
+                
+                Utils.RunProcessAsync(new Process { StartInfo = psi });
                 GetDistrosWithStatus();
             }
             catch (Exception ex)
